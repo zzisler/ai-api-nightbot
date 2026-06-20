@@ -35,7 +35,7 @@ func (h *Handler) Troll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("[%s] вопрос: %s", user, text)
+	log.Printf("[%s] question: %s", user, text)
 
 	content := buildUserMessage(user, text, h.Cfg.PromptTemplate)
 	reply, err := h.AiClient.AiReq([]ai.ReqMessage{{Role: "user", Content: content}})
@@ -50,6 +50,8 @@ func (h *Handler) Troll(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s, ИИ перегружен.", user)
 		return
 	}
+
+	log.Printf("[%s] answer: %s", user, reply.Content)
 
 	fmt.Fprintf(w, "%s", reply.Content)
 
