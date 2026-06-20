@@ -4,6 +4,7 @@ import (
 	"ai-nightbot/internal/ai"
 	"ai-nightbot/internal/config"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -34,14 +35,18 @@ func (h *Handler) Troll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("[%s] вопрос: %s", user, text)
+
 	content := buildUserMessage(user, text, h.Cfg.PromptTemplate)
 	reply, err := h.AiClient.AiReq([]ai.ReqMessage{{Role: "user", Content: content}})
 	if err != nil {
+		log.Printf("[%s] AI error: %v", user, err)
 		fmt.Fprintf(w, "%s, ИИ перегружен.", user)
 		return
 	}
 
 	if reply.Content == "" {
+		log.Printf("[%s] empty AI response", user)
 		fmt.Fprintf(w, "%s, ИИ перегружен.", user)
 		return
 	}
