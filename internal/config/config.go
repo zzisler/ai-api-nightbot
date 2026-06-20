@@ -22,10 +22,7 @@ var templates = map[string]string{
 
 func Load() (*Config, error) {
 
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
+	godotenv.Load()
 
 	cfg := &Config{}
 
@@ -36,7 +33,7 @@ func Load() (*Config, error) {
 
 	cfg.SecretToken = os.Getenv("SECRET_TOKEN")
 	if cfg.SecretToken == "" {
-		return nil, fmt.Errorf("API_KEY is not set")
+		return nil, fmt.Errorf("SECRET_TOKEN is not set")
 	}
 
 	cfg.ProxyUrl = os.Getenv("PROXY_URL")
