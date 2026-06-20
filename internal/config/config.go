@@ -40,9 +40,6 @@ func Load() (*Config, error) {
 	}
 
 	cfg.ProxyUrl = os.Getenv("PROXY_URL")
-	if cfg.ProxyUrl == "" {
-		return nil, fmt.Errorf("PROXY URL is not set")
-	}
 
 	data, err := os.ReadFile("internal/prompt/prompt.txt")
 	if err != nil {
